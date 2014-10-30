@@ -1,6 +1,6 @@
 package br.com.angeliski.tests;
 
-import java.util.List;
+import java.util.Queue;
 
 import javax.enterprise.context.Conversation;
 
@@ -11,7 +11,9 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import br.com.angeliski.dao.livro.LivroDAO;
 import br.com.angeliski.entidades.Livro;
+import br.com.angeliski.repository.livro.LivroRepository;
 import br.com.angeliski.view.home.HomeController;
 import br.com.caelum.vraptor.util.test.MockResult;
 
@@ -25,10 +27,13 @@ public class HomeControllerTest {
 
 	private MockResult result;
 
+	private LivroRepository livroRepository;
+
 	@Before
 	public void before() {
 		result = new MockResult();
-		homeController = new HomeController(result, conversation);
+		livroRepository = new LivroRepository(new LivroDAO());
+		homeController = new HomeController(result, conversation, livroRepository);
 	}
 
 	@Test
@@ -37,7 +42,7 @@ public class HomeControllerTest {
 		// verifica se o cid foi adicionado para manter a bean ativo
 		Assert.assertTrue("A conversação não foi adicionada", result.included().containsKey("cid"));
 		// verifica se os livros foram adicionados corretamente
-		List<Livro> livros = (List<Livro>) result.included("livros");
+		Queue<Livro> livros = (Queue<Livro>) result.included("livros");
 		Assert.assertNotNull("Os livros não foram adicionados", livros);
 		// só devem ter dois livros
 		Assert.assertEquals("O numero de livros esta diferente do esperado", 2, livros.size());

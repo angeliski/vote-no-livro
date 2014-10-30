@@ -1,8 +1,7 @@
 package br.com.angeliski.view.home;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Queue;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.Conversation;
@@ -10,6 +9,7 @@ import javax.enterprise.context.ConversationScoped;
 import javax.inject.Inject;
 
 import br.com.angeliski.entidades.Livro;
+import br.com.angeliski.repository.livro.LivroRepository;
 import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Path;
@@ -26,23 +26,26 @@ public class HomeController implements Serializable {
 	 */
 	private static final long serialVersionUID = -3994111876958024410L;
 
-	private List<Livro> livros;
+	private Queue<Livro> livros;
 
 	private Result result;
 
 	private Conversation conversation;
 
+	private LivroRepository livroRepository;
+
 	/**
 	 * @deprecated CDI eyes only
 	 */
 	protected HomeController() {
-		this(null, null);
+		this(null, null, null);
 	}
 
 	@Inject
-	public HomeController(Result result, Conversation conversation) {
+	public HomeController(Result result, Conversation conversation, LivroRepository livroRepository) {
 		this.result = result;
 		this.conversation = conversation;
+		this.livroRepository = livroRepository;
 	}
 
 	@PostConstruct
@@ -61,9 +64,7 @@ public class HomeController implements Serializable {
 	public void inicio() {
 		adicionarCID();
 		if (livros == null) {
-			livros = new ArrayList<Livro>();
-			livros.add(new Livro());
-			livros.add(new Livro());
+			livros = livroRepository.recuperaListaDeLivrosParaVotacao();
 		}
 		result.include("livros", livros);
 	}

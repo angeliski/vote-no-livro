@@ -13,7 +13,7 @@ import lombok.Setter;
 @Table(name = "livro")
 @Getter
 @Setter
-public class Livro {
+public class Livro implements Comparable<Livro> {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;
@@ -21,5 +21,16 @@ public class Livro {
 	private String nome;
 
 	private String url;
+
+	@Override
+	public int compareTo(Livro livro) {
+		int retorno = 0;
+		if (livro != null && nome != null) {
+			retorno = String.CASE_INSENSITIVE_ORDER.compare(nome, livro.nome);
+		} else if (nome != null) {
+			retorno = 1;
+		}
+		return retorno;
+	}
 
 }
