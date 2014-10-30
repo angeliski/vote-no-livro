@@ -72,10 +72,9 @@ public class HomeController implements Serializable {
 
 	@Post("voto")
 	public void voto(Livro livro) {
-		Livro livro2 = new Livro();
-		livro2.setId(2L);
-		livro2.setNome("Teste");
-		result.use(Results.json()).withoutRoot().from(livro2).serialize();
+		if (livros.size() >= 1) {
+			result.use(Results.json()).withoutRoot().from(livros.poll()).serialize();
+		}
 	}
 
 }

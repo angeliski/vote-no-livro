@@ -12,7 +12,7 @@ public class LivroDAO extends GenericDAO<Livro> {
 		Queue<Livro> queue = new PriorityQueue<Livro>();
 		queue.add(new Livro());
 		queue.add(new Livro());
-		
+
 		return queue;
 	}
 

@@ -13,9 +13,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import br.com.angeliski.dao.livro.LivroDAO;
 import br.com.angeliski.entidades.Livro;
+import br.com.angeliski.mocks.MockSerializationResultCustom;
 import br.com.angeliski.repository.livro.LivroRepository;
 import br.com.angeliski.view.home.HomeController;
-import br.com.caelum.vraptor.util.test.MockSerializationResult;
 
 import com.google.gson.Gson;
 
@@ -27,13 +27,13 @@ public class HomeControllerTest {
 	@Mock
 	private Conversation conversation;
 
-	private MockSerializationResult result;
+	private MockSerializationResultCustom result;
 
 	private LivroRepository livroRepository;
 
 	@Before
 	public void before() {
-		result = new MockSerializationResult();
+		result = new MockSerializationResultCustom();
 		livroRepository = new LivroRepository(new LivroDAO());
 		homeController = new HomeController(result, conversation, livroRepository);
 	}
@@ -51,17 +51,17 @@ public class HomeControllerTest {
 	}
 
 	@Test
-	public void votaTest() throws Exception {
+	public void votaTest() {
+		// simulando acesso do usuario
+		homeController.inicio();
+
 		// criando o livro que vai ser votado
 		Livro livroVotado = new Livro(1L, "Livro 1");
 
 		// votando no livro
 		homeController.voto(livroVotado);
 
-		// recuperando valores do json
-		String json = result.serializedResult();
-		Gson gson = new Gson();
-		Livro livro = gson.fromJson(json, Livro.class);
+		Livro livro = recuperaLivroDoJson();
 
 		// verificando se foi adicionado um novo livro para votação
 		Assert.assertNotNull("não foi adicionado nenhum livro para votação", livro);
@@ -69,6 +69,70 @@ public class HomeControllerTest {
 		// verifica se o livro que vai ser retornado para a nova votação não
 		// é o mesmo que foi votado
 		Assert.assertNotEquals("o livro retornando acabou de ser votado", livro.getId(), livroVotado.getId());
+	}
+
+	private Livro recuperaLivroDoJson() {
+		// recuperando valores do json
+		String json = null;
+		try {
+			json = result.serializedResult();
+		} catch (Exception e) {
+			Assert.fail(e.getMessage());
+		}
+		Gson gson = new Gson();
+		Livro livro = gson.fromJson(json, Livro.class);
+		return livro;
+	}
+
+	@Test
+	public void votaRedirecionaAoFimTest() {
+		// simulando acesso do usuario
+		homeController.inicio();
+
+		// criando o livro que vai ser votado
+		Livro livroVotado = new Livro(1L, "Livro 1");
+
+		// votando no livro
+		homeController.voto(livroVotado);
+
+		Livro livro = recuperaLivroDoJson();
+
+		// verificando se foi adicionado um novo livro para votação
+		Assert.assertNotNull("não foi adicionado nenhum livro para votação", livro);
+
+		// verifica se o livro que vai ser retornado para a nova votação não
+		// é o mesmo que foi votado
+		Assert.assertNotEquals("o livro retornando acabou de ser votado", livro.getId(), livroVotado.getId());
+
+		// limpando response para a nova requisicao
+		result.resetResponse();
+
+		// votando em outro livro
+		homeController.voto(livro);
+
+		livro = recuperaLivroDoJson();
+		// verificando se foi adicionado um novo livro para votação
+		Assert.assertNotNull("não foi adicionado nenhum livro para votação", livro);
+
+		// verifica se o livro que vai ser retornado para a nova votação não
+		// é o mesmo que foi votado
+		Assert.assertNotEquals("o livro retornando acabou de ser votado", livro.getId(), livroVotado.getId());
+
+		// limpando response para a nova requisicao
+		result.resetResponse();
+
+		// votando em outro livro
+		homeController.voto(livro);
+
+		livro = recuperaLivroDoJson();
+
+		// verificando se foi adicionado um novo livro para votação
+		Assert.assertNull("foi adicionada um livro onde não deveria existir mais", livro);
+
+		// verifica se o controller redireciona quando não houver mais livros
+		// para votar
+		Assert.assertTrue("O redirecionamento não foi feito", result.used());
+
 	}
 
 }
