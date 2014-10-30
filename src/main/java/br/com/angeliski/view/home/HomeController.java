@@ -13,6 +13,7 @@ import br.com.angeliski.repository.livro.LivroRepository;
 import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Path;
+import br.com.caelum.vraptor.Post;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.view.Results;
 
@@ -69,9 +70,12 @@ public class HomeController implements Serializable {
 		result.include("livros", livros);
 	}
 
-	@Path("teste")
-	public void teste() {
-		result.use(Results.json()).from(livros).serialize();
+	@Post("voto")
+	public void voto(Livro livro) {
+		Livro livro2 = new Livro();
+		livro2.setId(2L);
+		livro2.setNome("Teste");
+		result.use(Results.json()).withoutRoot().from(livro2).serialize();
 	}
 
 }

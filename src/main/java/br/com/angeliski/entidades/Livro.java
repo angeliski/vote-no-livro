@@ -22,6 +22,14 @@ public class Livro implements Comparable<Livro> {
 
 	private String url;
 
+	public Livro() {
+	}
+
+	public Livro(Long id, String nome) {
+		this.id = id;
+		this.nome = nome;
+	}
+
 	@Override
 	public int compareTo(Livro livro) {
 		int retorno = 0;

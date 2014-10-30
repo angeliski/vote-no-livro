@@ -15,7 +15,9 @@ import br.com.angeliski.dao.livro.LivroDAO;
 import br.com.angeliski.entidades.Livro;
 import br.com.angeliski.repository.livro.LivroRepository;
 import br.com.angeliski.view.home.HomeController;
-import br.com.caelum.vraptor.util.test.MockResult;
+import br.com.caelum.vraptor.util.test.MockSerializationResult;
+
+import com.google.gson.Gson;
 
 @RunWith(MockitoJUnitRunner.class)
 public class HomeControllerTest {
@@ -25,13 +27,13 @@ public class HomeControllerTest {
 	@Mock
 	private Conversation conversation;
 
-	private MockResult result;
+	private MockSerializationResult result;
 
 	private LivroRepository livroRepository;
 
 	@Before
 	public void before() {
-		result = new MockResult();
+		result = new MockSerializationResult();
 		livroRepository = new LivroRepository(new LivroDAO());
 		homeController = new HomeController(result, conversation, livroRepository);
 	}
@@ -46,7 +48,27 @@ public class HomeControllerTest {
 		Assert.assertNotNull("Os livros não foram adicionados", livros);
 		// só devem ter dois livros
 		Assert.assertEquals("O numero de livros esta diferente do esperado", 2, livros.size());
+	}
 
+	@Test
+	public void votaTest() throws Exception {
+		// criando o livro que vai ser votado
+		Livro livroVotado = new Livro(1L, "Livro 1");
+
+		// votando no livro
+		homeController.voto(livroVotado);
+
+		// recuperando valores do json
+		String json = result.serializedResult();
+		Gson gson = new Gson();
+		Livro livro = gson.fromJson(json, Livro.class);
+
+		// verificando se foi adicionado um novo livro para votação
+		Assert.assertNotNull("não foi adicionado nenhum livro para votação", livro);
+
+		// verifica se o livro que vai ser retornado para a nova votação não
+		// é o mesmo que foi votado
+		Assert.assertNotEquals("o livro retornando acabou de ser votado", livro.getId(), livroVotado.getId());
 	}
 
 }
