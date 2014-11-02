@@ -50,4 +50,8 @@ public class Livro implements Comparable<Livro> {
 		return retorno;
 	}
 
+	@Override
+	public String toString() {
+		return "Livro [id=" + id + ", nome=" + nome + ", url=" + url + "]";
+	}
 }

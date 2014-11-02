@@ -40,7 +40,8 @@ function votarNoLivro(id, $livro) {
 				// remove a imagem para causar um efeito melhor
 				$livro.detach();
 
-				if (data == "") {
+				if (data === undefined || data == "") {
+					// indica que não existem mais livros para votar
 					jQuery("#finalizaVotacao").submit();
 					return;
 				}
@@ -55,5 +56,9 @@ function votarNoLivro(id, $livro) {
 				// recoloca o evento para o usuario votar novamente
 				adicionarEvento();
 
-			});
+			}).fail(function(jqXHR, textStatus, errorThrown) {
+		console.log(jqXHR);
+		console.log(textStatus);
+		console.log(errorThrown);
+	});
 }

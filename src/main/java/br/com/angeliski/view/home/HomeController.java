@@ -9,6 +9,10 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.Conversation;
 import javax.enterprise.context.ConversationScoped;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import br.com.angeliski.entidades.Livro;
 import br.com.angeliski.repository.livro.LivroRepository;
@@ -32,11 +36,15 @@ public class HomeController implements Serializable {
 
 	private Queue<Livro> livros;
 
+	private List<Livro> livrosVotados;
+
 	private Result result;
 
 	private Conversation conversation;
 
 	private LivroRepository livroRepository;
+
+	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
 	/**
 	 * @deprecated CDI eyes only
@@ -81,13 +89,19 @@ public class HomeController implements Serializable {
 	@Post("voto")
 	@Consumes("application/json")
 	public void voto(Livro livro) {
-		System.out.println("voto no " + livro.getId());
+		logger.info("livro votado: " + livro);
+		if (livrosVotados == null) {
+			livrosVotados = new ArrayList<Livro>();
+		}
 
 		if (livros.size() > 0) {
 			result.use(Results.json()).withoutRoot().from(livros.poll()).serialize();
 		} else {
 			// sinaliza que nao existem mais livros para votar
-			result.use(Results.json()).withoutRoot().from(livros).serialize();
+			// linha adicionada para sinalizar que nao existe mais conteudo
+			// verificar se é bug no vraptor4 ou mal uso do nothing
+			result.use(Results.http()).setStatusCode(HttpServletResponse.SC_NO_CONTENT);
+			result.nothing();
 		}
 	}
 
