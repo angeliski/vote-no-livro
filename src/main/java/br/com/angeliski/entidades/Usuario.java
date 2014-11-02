@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
 import lombok.Getter;
@@ -37,7 +38,17 @@ public class Usuario {
 	public Usuario() {
 	}
 
-	
+	public Usuario(Long id, String nome, String email) {
+		super();
+		this.id = id;
+		this.nome = nome;
+		this.email = email;
+	}
+
+	@PrePersist
+	public void prePersist() {
+		setUltimaVisita(new Date());
+	}
 	
 	@Override
 	public String toString() {
@@ -53,15 +64,6 @@ public class Usuario {
 			builder.append("ultimaVisita=").append(ultimaVisita);
 		builder.append("]");
 		return builder.toString();
-	}
-
-
-
-	public Usuario(Long id, String nome, String email) {
-		super();
-		this.id = id;
-		this.nome = nome;
-		this.email = email;
 	}
 
 }

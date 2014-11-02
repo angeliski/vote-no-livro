@@ -45,6 +45,8 @@ public class HomeController implements Serializable {
 
 	private LivroRepository livroRepository;
 
+	private Usuario user;
+
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
 	/**
@@ -118,8 +120,18 @@ public class HomeController implements Serializable {
 	@Post("usuario")
 	public void concluirVotacao(Usuario usuario) {
 		logger.info("usuario que votou" + usuario);
-
 		usuario.setLivros(livrosVotados);
+		adicionarCID();
+
+		user = usuario;
+
+		result.redirectTo(this).ranking();
+	}
+
+	@Get("ranking")
+	public void ranking() {
+		result.include("usuario", user);
+		result.include("livros", livroRepository.recuperaListaDeLivrosParaVotacao());
 	}
 
 }

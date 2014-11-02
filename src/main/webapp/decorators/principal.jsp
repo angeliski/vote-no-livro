@@ -27,6 +27,9 @@
 	<script src="${pageContext.request.contextPath}/resources/js/jquery.js"></script>
 	<script
 		src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
+	
+	<decorator:getProperty property="page.jsCustom" />
 	<script src="${pageContext.request.contextPath}/resources/js/site.js"></script>
-</body>
+	<decorator:getProperty property="page.script" />
+</body> 
 </html>

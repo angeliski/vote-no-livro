@@ -39,6 +39,10 @@ public class Livro implements Comparable<Livro> {
 		this.nome = nome;
 	}
 
+	public int getTotal() {
+		return usuarios != null ? usuarios.size() : 0;
+	}
+
 	@Override
 	public int compareTo(Livro livro) {
 		int retorno = 0;
