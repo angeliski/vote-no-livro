@@ -18,8 +18,10 @@ function realizaVotacao(obj) {
 	jQuery(".img").off("click.realizaVotacao");
 
 	// esconde livro
-	$livro.hide("slow", votarNoLivro(id, $livro));
-}
+	$livro.hide("slow", "swing", function(){
+		votarNoLivro(id, $livro)
+	});
+} 
 
 function votarNoLivro(id, $livro) {
 	var data = JSON.stringify({
