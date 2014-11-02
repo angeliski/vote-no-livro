@@ -71,6 +71,7 @@ public class HomeController implements Serializable {
 	}
 
 	private void adicionarCID() {
+		logger.info("cid" + conversation.getId());
 		result.include("cid", conversation.getId());
 	}
 

@@ -3,6 +3,7 @@ package br.com.angeliski.entidades;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -31,7 +32,7 @@ public class Usuario {
 
 	private Date ultimaVisita;
 
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "usuario_livro", joinColumns = @JoinColumn(name = "livro_id"), inverseJoinColumns = @JoinColumn(name = "usuario_id"))
 	private List<Livro> livros;
 
@@ -49,7 +50,7 @@ public class Usuario {
 	public void prePersist() {
 		setUltimaVisita(new Date());
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();

@@ -1,11 +1,13 @@
 package br.com.angeliski.tests;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
 import javax.enterprise.context.Conversation;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,6 +41,16 @@ public class HomeControllerTest {
 		result = new MockSerializationResultCustom();
 		livroRepository = new LivroRepository(new LivroDAO() {
 			@Override
+			public void registraVotos(Usuario usuario) {
+
+			}
+
+			@Override
+			public List<Livro> recuperarLivros(Usuario usuario) {
+				return usuario.getLivros();
+			}
+
+			@Override
 			public Queue<Livro> recuperaListaDeLivrosParaVotacao() {
 				Queue<Livro> queue = new PriorityQueue<Livro>();
 				Livro livro = new Livro();
@@ -62,6 +74,13 @@ public class HomeControllerTest {
 			}
 		});
 		homeController = new HomeController(result, conversation, livroRepository);
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		homeController = null;
+		result = null;
+		livroRepository = null;
 	}
 
 	@Test

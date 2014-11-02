@@ -1,5 +1,6 @@
 package br.com.angeliski.repository.livro;
 
+import java.util.List;
 import java.util.Queue;
 
 import javax.inject.Inject;
@@ -41,7 +42,9 @@ public class LivroRepository extends GenericRepository<Livro> {
 	}
 
 	public void registraVotos(Usuario usuario) {
-
+		List<Livro> livros = livroDao.recuperarLivros(usuario);
+		usuario.setLivros(livros);
+		livroDao.registraVotos(usuario);
 	}
 
 }

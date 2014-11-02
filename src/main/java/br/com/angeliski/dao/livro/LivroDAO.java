@@ -1,8 +1,13 @@
 package br.com.angeliski.dao.livro;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
+
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 
 import br.com.angeliski.dao.generic.GenericDAO;
 import br.com.angeliski.entidades.Livro;
@@ -15,53 +20,39 @@ public class LivroDAO extends GenericDAO<Livro> {
 	 */
 	private static final long serialVersionUID = -2570317306470260845L;
 
+	/**
+	 * @deprecated CDI eyes only
+	 */
+	protected LivroDAO() {
+		this(null);
+	}
+
+	@Inject
+	public LivroDAO(EntityManager entityManager) {
+		super(entityManager);
+	}
+
 	public Queue<Livro> recuperaListaDeLivrosParaVotacao() {
-		Queue<Livro> queue = new PriorityQueue<Livro>();
-		Livro livro = new Livro();
-		livro.setId(1L);
-		livro.setNome("Livro 1");
-		livro.setUrl("resources/image/livro1.jpg");
-		livro.setUsuarios(new ArrayList<Usuario>());
-		livro.getUsuarios().add(new Usuario());
-		queue.add(livro);
 
-		livro = new Livro();
-		livro.setId(2L);
-		livro.setNome("Livro 2");
-		livro.setUrl("resources/image/livro2.jpg");
-		livro.setUsuarios(new ArrayList<Usuario>());
-		livro.getUsuarios().add(new Usuario());
-		queue.add(livro);
+		TypedQuery<Livro> query = getEntityManager().createQuery("select obj from Livro obj", Livro.class);
 
-		livro = new Livro();
-		livro.setId(2L);
-		livro.setNome("Livro 3");
-		livro.setUrl("resources/image/livro3.jpg");
-		livro.setUsuarios(new ArrayList<Usuario>());
-		livro.getUsuarios().add(new Usuario());
-		queue.add(livro);
-
-		livro = new Livro();
-		livro.setId(2L);
-		livro.setNome("Livro 4");
-		livro.setUrl("resources/image/livro4.jpg");
-		livro.setUsuarios(new ArrayList<Usuario>());
-		livro.getUsuarios().add(new Usuario());
-		queue.add(livro);
-
-		livro = new Livro();
-		livro.setId(2L);
-		livro.setNome("Livro 5");
-		livro.setUrl("resources/image/livro5.jpg");
-		livro.setUsuarios(new ArrayList<Usuario>());
-
-		queue.add(livro);
+		Queue<Livro> queue = new PriorityQueue<Livro>(query.getResultList());
 
 		return queue;
 	}
 
 	public void registraVotos(Usuario usuario) {
+		getEntityManager().persist(usuario);
+	}
 
+	public List<Livro> recuperarLivros(Usuario usuario) {
+		List<Livro> livros = new ArrayList<Livro>();
+
+		for (Livro livro : usuario.getLivros()) {
+			livros.add(getEntityManager().getReference(Livro.class, livro.getId()));
+		}
+
+		return livros;
 	}
 
 }

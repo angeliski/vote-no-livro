@@ -5,19 +5,21 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 </head>
 <body>
-	<!-- Formulario responsavel por enviar o usuario para o formulario de finalizacao -->
-	<form id="finalizaVotacao"
-		action="<c:url value="/usuario?cid=${cid}"/>" method="GET" role="form"></form>
 	<div id="container-img">
 		<c:forEach items="${livros}" var="livro" varStatus="i">
 			<img title="${livro.nome}" alt="${livro.nome}" src="${livro.url}"
 				class="img" data-id="${livro.id}" />
 		</c:forEach>
 	</div>
+	<content tag="script">
 	<script type="text/javascript">
 		function getCID() {
 			return "${cid}";
 		}
+		function redirect(){
+			window.document.location = '${pageContext.request.contextPath}/usuario?cid='+ getCID();
+		}
 	</script>
+	</content>
 </body>
 </html>

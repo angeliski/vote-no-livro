@@ -42,7 +42,7 @@ function votarNoLivro(id, $livro) {
 
 				if (data === undefined || data == "") {
 					// indica que não existem mais livros para votar
-					jQuery("#finalizaVotacao").submit();
+					redirect();
 					return;
 				}
 				// reajusta elemento com o novo livro vindo do servidor
