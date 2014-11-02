@@ -1,6 +1,8 @@
 package br.com.angeliski.view.home;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Queue;
 
 import javax.annotation.PostConstruct;
@@ -10,6 +12,7 @@ import javax.inject.Inject;
 
 import br.com.angeliski.entidades.Livro;
 import br.com.angeliski.repository.livro.LivroRepository;
+import br.com.caelum.vraptor.Consumes;
 import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Path;
@@ -67,14 +70,30 @@ public class HomeController implements Serializable {
 		if (livros == null) {
 			livros = livroRepository.recuperaListaDeLivrosParaVotacao();
 		}
-		result.include("livros", livros);
+
+		List<Livro> livrosParaVotacao = new ArrayList<Livro>();
+		livrosParaVotacao.add(livros.poll());
+		livrosParaVotacao.add(livros.poll());
+
+		result.include("livros", livrosParaVotacao);
 	}
 
 	@Post("voto")
+	@Consumes("application/json")
 	public void voto(Livro livro) {
-		if (livros.size() >= 1) {
+		System.out.println("voto no " + livro.getId());
+
+		if (livros.size() > 0) {
 			result.use(Results.json()).withoutRoot().from(livros.poll()).serialize();
+		} else {
+			// sinaliza que nao existem mais livros para votar
+			result.use(Results.json()).withoutRoot().from(livros).serialize();
 		}
+	}
+
+	@Get("usuario")
+	public void concluirVotacao() {
+		adicionarCID();
 	}
 
 }

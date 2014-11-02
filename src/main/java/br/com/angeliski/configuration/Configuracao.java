@@ -1,12 +1,20 @@
 package br.com.angeliski.configuration;
 
-import javax.enterprise.event.Observes;
-import javax.servlet.ServletContext;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+import javax.servlet.annotation.WebListener;
 
-public class Configuracao {
+@WebListener
+public class Configuracao implements ServletContextListener {
+	
+	@Override
+	public void contextInitialized(ServletContextEvent sce) {
+	
+	}
 
-	public void onCreate(@Observes ServletContext context) {
-		System.out.println("iniciando sistema...");
+	@Override
+	public void contextDestroyed(ServletContextEvent sce) {
+		
 	}
 
 }

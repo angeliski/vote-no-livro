@@ -13,9 +13,7 @@
 </c:set>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link type="text/css" rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/bootstrap.css" />
-<link type="text/css" rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/bootstrap-theme.css" />
+	href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" />
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/site.css" />
 <title><decorator:title default="${titulo}" /></title>
@@ -28,6 +26,7 @@
 	</div>
 	<script src="${pageContext.request.contextPath}/resources/js/jquery.js"></script>
 	<script
-		src="${pageContext.request.contextPath}/resources/js/bootstrap.js"></script>
+		src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/site.js"></script>
 </body>
 </html>

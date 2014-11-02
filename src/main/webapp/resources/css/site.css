@@ -1,0 +1,37 @@
+#container-img {
+	position: absolute;
+	left: 30%;
+	top: 25%;
+}
+
+.img {
+	margin-left: 50px;
+	width: 200px;
+	height: 283px;
+}
+
+.form-usuario {
+	max-width: 530px;
+	padding: 15px;
+	margin: 0 auto;
+	margin-top: 20%;
+}
+
+.form-usuario .btn {
+	margin-top: 2%;
+} 
+
+.form-usuario .form-control {
+	position: relative;
+	height: auto;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	padding: 10px;
+	margin-top: 2%;
+	font-size: 16px;
+}
+
+.form-usuario  .form-control:focus {
+	z-index: 2;
+}

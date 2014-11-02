@@ -1,5 +1,7 @@
 package br.com.angeliski.tests;
 
+import java.util.List;
+import java.util.PriorityQueue;
 import java.util.Queue;
 
 import javax.enterprise.context.Conversation;
@@ -34,7 +36,30 @@ public class HomeControllerTest {
 	@Before
 	public void before() {
 		result = new MockSerializationResultCustom();
-		livroRepository = new LivroRepository(new LivroDAO());
+		livroRepository = new LivroRepository(new LivroDAO() {
+			@Override
+			public Queue<Livro> recuperaListaDeLivrosParaVotacao() {
+				Queue<Livro> queue = new PriorityQueue<Livro>();
+				Livro livro = new Livro();
+				livro.setId(1L);
+				livro.setNome("Livro 1");
+				livro.setUrl("resources/image/livro1.jpg");
+
+				queue.add(livro);
+				livro = new Livro();
+				livro.setId(2L);
+				livro.setNome("Livro 2");
+				livro.setUrl("resources/image/livro2.jpg");
+				queue.add(livro);
+
+				livro = new Livro();
+				livro.setId(2L);
+				livro.setNome("Livro 3");
+				livro.setUrl("resources/image/livro3.jpg");
+				queue.add(livro);
+				return queue;
+			}
+		});
 		homeController = new HomeController(result, conversation, livroRepository);
 	}
 
@@ -44,7 +69,7 @@ public class HomeControllerTest {
 		// verifica se o cid foi adicionado para manter a bean ativo
 		Assert.assertTrue("A conversação não foi adicionada", result.included().containsKey("cid"));
 		// verifica se os livros foram adicionados corretamente
-		Queue<Livro> livros = (Queue<Livro>) result.included("livros");
+		List<Livro> livros = (List<Livro>) result.included("livros");
 		Assert.assertNotNull("Os livros não foram adicionados", livros);
 		// só devem ter dois livros
 		Assert.assertEquals("O numero de livros esta diferente do esperado", 2, livros.size());
@@ -96,28 +121,6 @@ public class HomeControllerTest {
 		homeController.voto(livroVotado);
 
 		Livro livro = recuperaLivroDoJson();
-
-		// verificando se foi adicionado um novo livro para votação
-		Assert.assertNotNull("não foi adicionado nenhum livro para votação", livro);
-
-		// verifica se o livro que vai ser retornado para a nova votação não
-		// é o mesmo que foi votado
-		Assert.assertNotEquals("o livro retornando acabou de ser votado", livro.getId(), livroVotado.getId());
-
-		// limpando response para a nova requisicao
-		result.resetResponse();
-
-		// votando em outro livro
-		homeController.voto(livro);
-
-		livro = recuperaLivroDoJson();
-		// verificando se foi adicionado um novo livro para votação
-		Assert.assertNotNull("não foi adicionado nenhum livro para votação", livro);
-
-		// verifica se o livro que vai ser retornado para a nova votação não
-		// é o mesmo que foi votado
-		Assert.assertNotEquals("o livro retornando acabou de ser votado", livro.getId(), livroVotado.getId());
-
 		// limpando response para a nova requisicao
 		result.resetResponse();
 
