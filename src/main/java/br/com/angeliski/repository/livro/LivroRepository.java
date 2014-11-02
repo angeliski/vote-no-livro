@@ -1,5 +1,6 @@
 package br.com.angeliski.repository.livro;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Queue;
 
@@ -44,6 +45,20 @@ public class LivroRepository extends GenericRepository<Livro> {
 	public void registraVotos(Usuario usuario) {
 		List<Livro> livros = livroDao.recuperarLivros(usuario);
 		usuario.setLivros(livros);
+		Usuario user = livroDao.recuperaUsuarioPorEmail(usuario.getEmail());
+		// identifica que o usuario esta voltando ao site
+		if (user != null) {
+
+			// atribuindo data de modificação ao usuario
+			// preUpdate não atende porque o objeto gerenciado não foi
+			// atualizado
+			user.setUltimaVisita(new Date());
+			usuario.setUltimaVisita(new Date());
+ 
+			usuario = user;
+			user.getLivros().addAll(livros);
+		}
+
 		livroDao.registraVotos(usuario);
 	}
 

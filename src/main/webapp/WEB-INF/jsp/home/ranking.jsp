@@ -3,9 +3,18 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<c:set var="usuarioNovo" value="${empty usuario.ultimaVisita }"
+	scope="page" />
 </head>
 <body>
-
+	<h4>
+		Seja Bem Vindo
+		<c:if test="${not usuarioNovo}">novamente</c:if>
+		${usuario.nome}!
+		<c:if test="${not usuarioNovo}">As coisas podem ter mudado desde a sua ultima visita.<br />
+		</c:if>
+		Obrigado pelos seus votos!
+	</h4>
 	<div id="ranking-livros" style="width: 100%; height: 400px;"></div>
 	<content tag="jsCustom"> <script
 		src="${pageContext.request.contextPath}/resources/js/highcharts.js"></script>
@@ -53,7 +62,7 @@
 										showInLegend : true,
 										dataLabels : {
 											enabled : true,
-											format : '<b>{point.name}</b>: {point.y:.1f}',
+											format : '<b>{point.name}</b>: {point.y}',
 											style : {
 												color : (Highcharts.theme && Highcharts.theme.contrastTextColor)
 														|| 'black'

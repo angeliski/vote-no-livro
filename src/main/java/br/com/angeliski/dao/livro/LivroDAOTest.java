@@ -25,6 +25,8 @@ public class LivroDAOTest {
 	private EntityManager entityManager;
 	@Mock
 	private TypedQuery<Livro> queryLivros;
+	@Mock
+	TypedQuery<Usuario> queryUsuario;
 	private LivroDAO dao;
 
 	@Before
@@ -33,6 +35,10 @@ public class LivroDAOTest {
 
 		Mockito.when(entityManager.createQuery("select obj from Livro obj", Livro.class)).thenReturn(queryLivros);
 		Mockito.when(queryLivros.getResultList()).thenReturn(new ArrayList<Livro>());
+
+		Mockito.when(queryUsuario.getSingleResult()).thenReturn(new Usuario());
+		Mockito.when(entityManager.createQuery("select obj from Usuario obj where obj.email =:email", Usuario.class)).thenReturn(
+				queryUsuario);
 	}
 
 	@After
@@ -74,6 +80,12 @@ public class LivroDAOTest {
 		} catch (Exception e) {
 			Assert.fail(e.getMessage());
 		}
+	}
+
+	@Test
+	public void testRecuperaUsuarioPorEmail() {
+		Usuario usuario = dao.recuperaUsuarioPorEmail("test@test.com");
+		Assert.assertNotNull("Não foi recuperado nenhum usuário", usuario);
 	}
 
 }

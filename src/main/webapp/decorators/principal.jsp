@@ -22,14 +22,16 @@
 <body id="corpo">
 
 	<div id="main_wrapper">
-		<decorator:body />
+		<div class="jumbotron">
+			<decorator:body />
+		</div>
 	</div>
 	<script src="${pageContext.request.contextPath}/resources/js/jquery.js"></script>
 	<script
 		src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
-	
+
 	<decorator:getProperty property="page.jsCustom" />
 	<script src="${pageContext.request.contextPath}/resources/js/site.js"></script>
 	<decorator:getProperty property="page.script" />
-</body> 
+</body>
 </html>

@@ -7,6 +7,7 @@ import java.util.Queue;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
 import br.com.angeliski.dao.generic.GenericDAO;
@@ -42,7 +43,11 @@ public class LivroDAO extends GenericDAO<Livro> {
 	}
 
 	public void registraVotos(Usuario usuario) {
-		getEntityManager().persist(usuario);
+		if (usuario.getId() != null) {
+			getEntityManager().merge(usuario);
+		} else {
+			getEntityManager().persist(usuario);
+		}
 	}
 
 	public List<Livro> recuperarLivros(Usuario usuario) {
@@ -53,6 +58,18 @@ public class LivroDAO extends GenericDAO<Livro> {
 		}
 
 		return livros;
+	}
+
+	public Usuario recuperaUsuarioPorEmail(String email) {
+		TypedQuery<Usuario> query = getEntityManager().createQuery("select obj from Usuario obj where obj.email =:email", Usuario.class);
+		query.setParameter("email", email);
+		Usuario user = null;
+		try {
+			user = query.getSingleResult();
+		} catch (NoResultException e) {
+			user = null;
+		}
+		return user;
 	}
 
 }

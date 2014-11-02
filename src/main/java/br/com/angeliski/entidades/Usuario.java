@@ -11,7 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
 import lombok.Getter;
@@ -44,11 +43,6 @@ public class Usuario {
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
-	}
-
-	@PrePersist
-	public void prePersist() {
-		setUltimaVisita(new Date());
 	}
 
 	@Override
