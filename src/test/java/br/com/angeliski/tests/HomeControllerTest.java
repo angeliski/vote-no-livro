@@ -15,6 +15,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import br.com.angeliski.dao.livro.LivroDAO;
 import br.com.angeliski.entidades.Livro;
+import br.com.angeliski.entidades.Usuario;
 import br.com.angeliski.mocks.MockSerializationResultCustom;
 import br.com.angeliski.repository.livro.LivroRepository;
 import br.com.angeliski.view.home.HomeController;
@@ -138,4 +139,28 @@ public class HomeControllerTest {
 
 	}
 
+	@Test
+	public void concluirVotacaoTest() {
+		// simulando o fluxo do usuario
+		// entra na tela
+		homeController.inicio();
+
+		// criando o livro que vai ser votado
+		Livro livroVotado = new Livro(1L, "Livro 1");
+
+		// votando no livro
+		homeController.voto(livroVotado);
+
+		// votando em outro livro
+		homeController.voto(livroVotado);
+
+		Usuario usuario = new Usuario(1L, "Test", "test@test.com");
+
+		homeController.concluirVotacao(usuario);
+
+		Assert.assertNotNull("Não foi adicionado nenhum livro para o usuário", usuario.getLivros());
+
+		Assert.assertEquals("O número de livros votados está diferente do esperado.", 2, usuario.getLivros().size());
+
+	}
 }

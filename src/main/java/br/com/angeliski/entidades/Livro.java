@@ -52,6 +52,16 @@ public class Livro implements Comparable<Livro> {
 
 	@Override
 	public String toString() {
-		return "Livro [id=" + id + ", nome=" + nome + ", url=" + url + "]";
+		StringBuilder builder = new StringBuilder();
+		builder.append("Livro [");
+		if (id != null)
+			builder.append("id=").append(id).append(", ");
+		if (nome != null)
+			builder.append("nome=").append(nome).append(", ");
+		if (url != null)
+			builder.append("url=").append(url);
+		builder.append("]");
+		return builder.toString();
 	}
+
 }

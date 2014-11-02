@@ -5,6 +5,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 </head>
 <body>
+	<!-- Formulario responsavel por enviar o usuario para o formulario de finalizacao -->
 	<form id="finalizaVotacao"
 		action="<c:url value="/usuario?cid=${cid}"/>" method="GET" role="form"></form>
 	<div id="container-img">

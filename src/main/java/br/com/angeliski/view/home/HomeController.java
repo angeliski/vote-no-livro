@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import br.com.angeliski.entidades.Livro;
+import br.com.angeliski.entidades.Usuario;
 import br.com.angeliski.repository.livro.LivroRepository;
 import br.com.caelum.vraptor.Consumes;
 import br.com.caelum.vraptor.Controller;
@@ -90,13 +91,17 @@ public class HomeController implements Serializable {
 	@Consumes("application/json")
 	public void voto(Livro livro) {
 		logger.info("livro votado: " + livro);
+
 		if (livrosVotados == null) {
 			livrosVotados = new ArrayList<Livro>();
 		}
 
+		livrosVotados.add(livro);
 		if (livros.size() > 0) {
+			logger.info("livro enviado para votacao" + livro);
 			result.use(Results.json()).withoutRoot().from(livros.poll()).serialize();
 		} else {
+			logger.info("não existem mais livros para serem votados");
 			// sinaliza que nao existem mais livros para votar
 			// linha adicionada para sinalizar que nao existe mais conteudo
 			// verificar se é bug no vraptor4 ou mal uso do nothing
@@ -108,6 +113,13 @@ public class HomeController implements Serializable {
 	@Get("usuario")
 	public void concluirVotacao() {
 		adicionarCID();
+	}
+
+	@Post("usuario")
+	public void concluirVotacao(Usuario usuario) {
+		logger.info("usuario que votou" + usuario);
+
+		usuario.setLivros(livrosVotados);
 	}
 
 }

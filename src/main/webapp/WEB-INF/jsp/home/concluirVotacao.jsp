@@ -9,9 +9,12 @@
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-offset-2 col-md-8">
-				<form class="form-usuario" role="form">
-					<input type="text" class="form-control" placeholder="Nome" required
-						autofocus> <input type="email" class="form-control"
+				<form class="form-usuario"
+					action="<c:url value="/usuario?cid=${cid}"/>" method="POST"
+					role="form">
+					<input type="text" class="form-control" placeholder="Nome"
+						name="usuario.nome" required autofocus> <input
+						type="email" class="form-control" name="usuario.email"
 						placeholder="Email" required autofocus>
 					<button class="btn btn-lg btn-primary btn-block" type="submit">Confirmar</button>
 				</form>

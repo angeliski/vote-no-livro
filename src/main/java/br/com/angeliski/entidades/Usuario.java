@@ -34,4 +34,34 @@ public class Usuario {
 	@JoinTable(name = "usuario_livro", joinColumns = @JoinColumn(name = "livro_id"), inverseJoinColumns = @JoinColumn(name = "usuario_id"))
 	private List<Livro> livros;
 
+	public Usuario() {
+	}
+
+	
+	
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Usuario [");
+		if (id != null)
+			builder.append("id=").append(id).append(", ");
+		if (nome != null)
+			builder.append("nome=").append(nome).append(", ");
+		if (email != null)
+			builder.append("email=").append(email).append(", ");
+		if (ultimaVisita != null)
+			builder.append("ultimaVisita=").append(ultimaVisita);
+		builder.append("]");
+		return builder.toString();
+	}
+
+
+
+	public Usuario(Long id, String nome, String email) {
+		super();
+		this.id = id;
+		this.nome = nome;
+		this.email = email;
+	}
+
 }
