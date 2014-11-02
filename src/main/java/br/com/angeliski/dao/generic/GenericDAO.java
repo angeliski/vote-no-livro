@@ -20,4 +20,5 @@ public abstract class GenericDAO<T> implements Serializable {
 	public EntityManager getEntityManager() {
 		return entityManager;
 	}
+
 }

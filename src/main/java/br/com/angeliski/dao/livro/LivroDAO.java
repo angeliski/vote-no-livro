@@ -57,7 +57,11 @@ public class LivroDAO extends GenericDAO<Livro> {
 
 		queue.add(livro);
 
-		return queue; 
+		return queue;
+	}
+
+	public void registraVotos(Usuario usuario) {
+
 	}
 
 }

@@ -123,6 +123,8 @@ public class HomeController implements Serializable {
 		usuario.setLivros(livrosVotados);
 		adicionarCID();
 
+		livroRepository.registraVotos(usuario);
+
 		user = usuario;
 
 		result.redirectTo(this).ranking();
