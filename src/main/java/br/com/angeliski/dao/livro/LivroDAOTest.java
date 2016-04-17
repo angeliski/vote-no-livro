@@ -49,7 +49,7 @@ public class LivroDAOTest {
 	public void testRecuperaListaDeLivrosParaVotacao() {
 		Queue<Livro> livros = dao.recuperaListaDeLivrosParaVotacao();
 
-		Assert.assertEquals("Número de livros diferente do esperado", 0, livros.size());
+		Assert.assertEquals("NÃºmero de livros diferente do esperado", 0, livros.size());
 	}
 
 	@Test
@@ -85,7 +85,7 @@ public class LivroDAOTest {
 	@Test
 	public void testRecuperaUsuarioPorEmail() {
 		Usuario usuario = dao.recuperaUsuarioPorEmail("test@test.com");
-		Assert.assertNotNull("Não foi recuperado nenhum usuário", usuario);
+		Assert.assertNotNull("NÃ£o foi recuperado nenhum usuÃ¡rio", usuario);
 	}
 
 }

@@ -21,7 +21,7 @@
 		<dependency>
 			<groupId>br.com.caelum</groupId>
 			<artifactId>vraptor</artifactId>
-			<version>4.1.0-RC2</version>
+			<version>4.2.0-RC3</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.inject</groupId>
@@ -56,6 +56,7 @@
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
 			<version>4.3.5.Final</version>
+            <scope>provided</scope>
 		</dependency>
 		<!-- hsqldb -->
 		<dependency>
@@ -75,7 +76,7 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.11</version>
-			<scope>test</scope>
+			
 		</dependency>
 		<!-- Mockito -->
 		<dependency>

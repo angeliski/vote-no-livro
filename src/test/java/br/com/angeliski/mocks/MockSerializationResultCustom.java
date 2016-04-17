@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import javax.enterprise.inject.Vetoed;
 
 import br.com.caelum.vraptor.View;
+import br.com.caelum.vraptor.core.DefaultReflectionProvider;
+import br.com.caelum.vraptor.core.ReflectionProvider;
 import br.com.caelum.vraptor.environment.Environment;
 import br.com.caelum.vraptor.environment.NullEnvironment;
 import br.com.caelum.vraptor.http.FormatResolver;
@@ -15,6 +17,7 @@ import br.com.caelum.vraptor.serialization.DefaultRepresentationResult;
 import br.com.caelum.vraptor.serialization.JSONSerialization;
 import br.com.caelum.vraptor.serialization.RepresentationResult;
 import br.com.caelum.vraptor.serialization.Serialization;
+import br.com.caelum.vraptor.serialization.Serializee;
 import br.com.caelum.vraptor.serialization.XMLSerialization;
 import br.com.caelum.vraptor.serialization.gson.GsonBuilderWrapper;
 import br.com.caelum.vraptor.serialization.gson.GsonJSONSerialization;
@@ -61,7 +64,8 @@ public class MockSerializationResultCustom extends MockResult {
 
 	public MockSerializationResultCustom() {
 		this(new JavassistProxifier(), XStreamBuilderImpl.cleanInstance(), new GsonBuilderWrapper(new MockInstanceImpl<>(
-				new ArrayList<JsonSerializer<?>>()), new MockInstanceImpl<>(new ArrayList<JsonDeserializer<?>>())));
+				new ArrayList<JsonSerializer<?>>()), new MockInstanceImpl<>(new ArrayList<JsonDeserializer<?>>()), new Serializee(new DefaultReflectionProvider()), new DefaultReflectionProvider()));
+
 	}
 
 	public void resetResponse() {
@@ -79,7 +83,7 @@ public class MockSerializationResultCustom extends MockResult {
 
 	private <T extends View> T instanceView(Class<T> view) {
 		if (view.isAssignableFrom(JSONSerialization.class)) {
-			serialization = new GsonJSONSerialization(response, extractor, gsonBuilder, environment);
+			serialization = new GsonJSONSerialization(response, extractor, gsonBuilder, environment, new DefaultReflectionProvider());
 			return view.cast(serialization);
 		}
 
